@@ -1,0 +1,39 @@
+@import './default';
+@colorA: red;
+
+/*//使用less，可以对css属性进行嵌套*/
+/*
+//以及自定义属性，方便进行调用
+*/
+
+/*div {
+  color: @colorA;
+  a {
+    color: black;
+  }
+}*/
+
+.container {
+  display: flex;
+  .navLeft {
+    width: 15%;
+    min-width: 180px;
+    height: calc(100vh);
+    background-color: #001529;
+  }
+  .main {
+    flex: 1;
+    height: calc(100vh);
+    background-color: @colorL;
+    overflow: auto;
+    /*calc 的用法， calc = calc(四则运算)*/
+    .content {
+      position: relative;
+      padding: 20px;
+      margin: 20px;
+
+      font-size: 20px;
+      background-color: @colorM;
+    }
+  }
+}
