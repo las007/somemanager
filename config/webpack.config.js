@@ -1,5 +1,6 @@
 'use strict';
 
+const autoprefixer = require('autoprefixer');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -58,8 +59,8 @@ const swSrc = paths.swSrc;
 // style files regexes
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
-const lessRegex = /\.less$/;
-const lessModuleRegex = /\.module\.less$/;
+// const lessRegex = /\.less$/;
+// const lessModuleRegex = /\.module\.less$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
@@ -111,25 +112,25 @@ module.exports = function (webpackEnv) {
         loader: require.resolve('css-loader'),
         options: cssOptions,
       },
-      {
-        loader: require.resolve('less-loader'),
-        // options: lessOptions,
-        options: {
-          // modules: false,
-          // modifyVars: {
-          //   "@primary-color": "#f9c700"
-          // },
-          // javascriptEnabled: true,
-          lessOptions: {
-            modules: false,
-            modifyVars: {
-              // "@primary-color": "#f9c700"
-              "@primary-color": "#1DA57A"
-            },
-            javascriptEnabled: true,
-          }
-        }
-      },
+      // {
+      //   loader: require.resolve('less-loader'),
+      //   // options: lessOptions,
+      //   options: {
+      //     // modules: false,
+      //     // modifyVars: {
+      //     //   "@primary-color": "#f9c700"
+      //     // },
+      //     // javascriptEnabled: true,
+      //     lessOptions: {
+      //       modules: false,
+      //       modifyVars: {
+      //         // "@primary-color": "#f9c700"
+      //         "@primary-color": "#1DA57A"
+      //       },
+      //       javascriptEnabled: true,
+      //     }
+      //   }
+      // },
       {
         // Options for PostCSS as we reference these options twice
         // Adds vendor prefixing based on your specified browser support in
@@ -396,6 +397,53 @@ module.exports = function (webpackEnv) {
                 name: 'static/media/[name].[hash:8].[ext]',
               },
             },
+
+
+            {
+              test: /\.less$/,
+              use: [
+                require.resolve('style-loader'),
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    importLoaders: 1,
+                  },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                  options: {
+                    // Necessary for external CSS imports to work
+                    // https://github.com/facebookincubator/create-react-app/issues/2677
+                    ident: 'postcss',
+                    plugins: () => [
+                      require('postcss-flexbugs-fixes'),
+                      autoprefixer({
+                        browsers: [
+                          '>1%',
+                          'last 4 versions',
+                          'Firefox ESR',
+                          'not ie < 9', // React doesn't support IE8 anyway
+                        ],
+                        flexbox: 'no-2009',
+                      }),
+                    ],
+                  },
+                },
+                {
+                  loader:require.resolve('less-loader'),
+                  options: {
+                    lessOptions: {
+                      modules: false,
+                      modifyVars: {
+                        "@primary-color": "#1DA57A"
+                      },
+                            javascriptEnabled: true,
+                    }
+                  }
+                }
+              ],
+            },
+
             // "url" loader works like "file" loader except that it embeds assets
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
@@ -436,8 +484,9 @@ module.exports = function (webpackEnv) {
                             '@svgr/webpack?-svgo,+titleProp,+ref![path]',
                         },
                       },
-                    },
+                    }
                   ],
+                  ['import', { libraryName: 'antd', style: true }],
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
@@ -515,7 +564,7 @@ module.exports = function (webpackEnv) {
               }),
             },
 
-            {
+            /*{
               test: lessRegex,
               exclude: lessModuleRegex,
               use: getStyleLoaders({
@@ -543,7 +592,7 @@ module.exports = function (webpackEnv) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
               }),
-            },
+            },*/
             // Opt-in support for SASS (using .scss or .sass extensions).
             // By default we support SASS Modules with the
             // extensions .module.scss or .module.sass

@@ -4,7 +4,11 @@ import './index.less'
 import Util from '../../utils/utils'
 import axios from '../../axios'
 
-export default class Header extends React.Component{
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+
+
+class Header extends React.Component{
     constructor(props) {
         super(props);
         this.state = {}
@@ -37,14 +41,14 @@ export default class Header extends React.Component{
         return (
             <div className="header">
                 <Row className="header-top">
-                    <Col span="24">
+                    <Col span={24}>
                         <span>你好！欢迎，{this.state.userName}</span>
-                        <a href="#">退出</a>
+                        <a href="/#">退出</a>
                     </Col>
                 </Row>
                 <Row className="breadcrumb">
-                    <Col span="4" className="breadcrumb-title">
-                        首页
+                    <Col span={4} className="breadcrumb-title">
+                        { this.props.menuName }
                     </Col>
                     <Col className="weather">
                         <span className="date">{this.state.sysTime}</span>
@@ -56,3 +60,10 @@ export default class Header extends React.Component{
     }
 
 }
+
+const mapStateToProps = state => {
+    return {
+        menuName: state.menuName,
+    }
+}
+export default connect(mapStateToProps)(Header);

@@ -3,7 +3,7 @@ import Child from './Child'
 // import './Life.css'
 import './Life.less'
 import {Button, Input} from "antd";
-import 'antd/dist/antd.less'
+// import 'antd/dist/antd.less'
 //
 class Life extends React.Component {
     constructor(props) {

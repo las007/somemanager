@@ -1,6 +1,8 @@
 import React from 'react';
 import {Card, Button, Radio} from "antd";
 import './ui.less'
+// import 'antd/dist/antd.less'; // 引入官方提供的 less 样式入口文件
+
 
 
 export default class Buttons extends React.Component {
